@@ -1,0 +1,84 @@
+---
+title: "My Journey into DevOps: From Curiosity to Craft"
+description: "How I stumbled into DevOps, broke things, fixed them, and learned to love systems, automation, and responsibility."
+date: 2026-02-12
+tags: ["DevOps", "SRE", "Cloud", "Learning", "Career"]
+---
+
+# My Journey into DevOps: From Curiosity to Craft
+
+DevOps wasn’t something I *planned* to get into.  
+It was something I slowly **fell into**, broke my way through, and eventually chose to stay with.
+
+This is the story of how curiosity turned into obsession, and how obsession turned into a craft.
+
+---
+
+## The Early Days: Just Trying to Make Things Work
+
+Like many people, I started out wanting to *build things*.  
+Applications. Scripts. Small tools. Anything that ran and did something useful.
+
+At first, my focus was simple:
+
+- Write code  
+- Run it  
+- Hope it doesn’t crash  
+
+And when it *did* crash, my solution was usually:
+
+> “Restart it and pray.”
+
+I didn’t know it at the time, but this was my first exposure to **operations**.
+
+---
+
+## The First Reality Check: "It Works on My Machine"
+
+Everything changed the moment I tried to run my code somewhere else.
+
+Different OS.  
+Different dependencies.  
+Different environment variables.  
+
+Suddenly:
+- Ports were blocked
+- Services wouldn’t start
+- Logs made no sense
+- Nothing behaved the way it did locally
+
+That infamous sentence hit me hard:
+
+> “It works on my machine.”
+
+That’s when I realized:  
+**Writing code is only half the job.**
+
+---
+
+## Discovering DevOps (Without Knowing the Name)
+
+Before I even knew the word *DevOps*, I was already doing DevOps things:
+
+- Writing shell scripts to automate setup
+- Manually deploying apps to servers
+- Setting up cron jobs and basic monitoring
+- Debugging production issues at 2 AM
+
+I started asking different questions:
+
+- Why did this fail?
+- How do I prevent this from happening again?
+- How can I make this reproducible?
+
+Those questions pulled me deeper than any framework ever did.
+
+---
+
+## Containers Changed Everything
+
+The first time I used Docker properly, something clicked.
+
+```bash
+docker build .
+docker run -p 8080:8080 app
