@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { ReadingProgress } from "@/components/ui/ReadingProgress";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,6 +27,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <ReadingProgress />
           <Header />
           <main className="flex-grow container mx-auto px-4 py-8 max-w-4xl">
             {children}

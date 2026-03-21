@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { codeToHtml } from 'shiki';
 import { ComponentPropsWithoutRef } from 'react';
+import { CopyButton } from './ui/CopyButton';
 
 type HeadingProps = ComponentPropsWithoutRef<'h1'>;
 type ParagraphProps = ComponentPropsWithoutRef<'p'>;
@@ -72,15 +73,21 @@ const components = {
         });
 
         return (
-            <div className="relative group my-10">
+            <div className="relative group my-10 rounded-2xl border border-slate-200 dark:border-slate-800 bg-[#0d1117] shadow-xl overflow-hidden">
                 <div className="absolute -inset-2 bg-gradient-to-r from-accent/20 to-purple-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                
+                <div className="flex items-center justify-between px-4 py-2 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
+                    <div className="text-xs font-mono text-slate-500 uppercase tracking-widest select-none">
+                        {lang}
+                    </div>
+                </div>
+
+                <CopyButton text={code} />
+
                 <div
-                    className="relative rounded-2xl overflow-hidden text-sm border border-slate-200 dark:border-slate-800 bg-[#0d1117] shadow-xl"
+                    className="relative text-sm p-4 overflow-x-auto"
                     dangerouslySetInnerHTML={{ __html: html }}
                 />
-                <div className="absolute top-4 right-4 text-xs font-mono text-slate-500 uppercase tracking-widest pointer-events-none select-none">
-                    {lang}
-                </div>
             </div>
         );
     },

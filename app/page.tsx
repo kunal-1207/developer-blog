@@ -88,6 +88,38 @@ export default async function HomePage() {
             }))}
           />
         </section>
+
+        {/* Newsletter Section - Premium Glassmorphism */}
+        <section className="relative overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 p-8 md:p-12 backdrop-blur-xl shadow-2xl">
+          <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-blue-500/10 blur-3xl opacity-50" />
+          <div className="absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-purple-500/10 blur-3xl opacity-50" />
+          
+          <div className="relative z-10 max-w-xl space-y-6">
+            <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+              Stay ahead of the curve.
+            </h2>
+            <p className="text-lg text-slate-600 dark:text-slate-400">
+              Join 2,000+ developers getting monthly insights on distributed systems, DevOps patterns, and cloud-native architecture.
+            </p>
+            <form className="flex flex-col sm:flex-row gap-3 pt-2">
+              <input
+                type="email"
+                placeholder="architect@example.com"
+                className="flex-grow rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all shadow-inner"
+                required
+              />
+              <button
+                type="submit"
+                className="rounded-xl bg-slate-900 dark:bg-white px-8 py-3 text-sm font-bold text-white dark:text-slate-900 transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-blue-500/10"
+              >
+                Join the list
+              </button>
+            </form>
+            <p className="text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-widest font-bold">
+              No spam. Just high-signal engineering.
+            </p>
+          </div>
+        </section>
       </div>
     </div>
   );

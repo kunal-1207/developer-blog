@@ -2,8 +2,8 @@ export const siteConfig = {
     title: 'DevBlog',
     description: 'A production-grade developer blog powered by Next.js and MDX.',
     author: 'Kunal',
-    url: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
-    github: 'https://github.com/kunal-1207',
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://developer-blog-bay.vercel.app',
+    github: 'https://github.com/kunal-1207/developer-blog',
     twitter: '@kunal_1207',
     giscus: {
         repo: process.env.NEXT_PUBLIC_GISCUS_REPO || '',
