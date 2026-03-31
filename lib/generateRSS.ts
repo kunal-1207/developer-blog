@@ -30,9 +30,5 @@ export async function generateRSS() {
 </channel>
 </rss>`;
 
-    const publicDir = path.join(process.cwd(), 'public');
-    if (!fs.existsSync(publicDir)) {
-        fs.mkdirSync(publicDir, { recursive: true });
-    }
-    fs.writeFileSync(path.join(publicDir, 'rss.xml'), rss);
+    return rss;
 }
