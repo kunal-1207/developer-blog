@@ -1,17 +1,18 @@
 import fs from 'fs';
 import path from 'path';
 import { getPosts } from './getPosts';
+import { siteConfig } from './config';
 
 export async function generateRSS() {
     const posts = await getPosts();
-    const baseUrl = 'https://your-domain.com'; // USER needs to update this
+    const baseUrl = siteConfig.url;
 
     const rss = `<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
-  <title>DevBlog</title>
+  <title>${siteConfig.title}</title>
   <link>${baseUrl}</link>
-  <description>Deep dives into distributed systems, DevOps, and senior software architecture.</description>
+  <description>${siteConfig.description}</description>
   <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
   <atom:link href="${baseUrl}/rss.xml" rel="self" type="application/rss+xml" />
   ${posts
@@ -19,10 +20,10 @@ export async function generateRSS() {
                 (post) => `
     <item>
       <title>${post.title}</title>
-      <link>${baseUrl}/blog/${post.slug}</link>
-      <description>${post.description}</description>
+      <link>${baseUrl}/posts/${post.slug}</link>
+      <description>${post.excerpt}</description>
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
-      <guid>${baseUrl}/blog/${post.slug}</guid>
+      <guid>${baseUrl}/posts/${post.slug}</guid>
     </item>`
             )
             .join('')}
@@ -30,5 +31,8 @@ export async function generateRSS() {
 </rss>`;
 
     const publicDir = path.join(process.cwd(), 'public');
+    if (!fs.existsSync(publicDir)) {
+        fs.mkdirSync(publicDir, { recursive: true });
+    }
     fs.writeFileSync(path.join(publicDir, 'rss.xml'), rss);
 }

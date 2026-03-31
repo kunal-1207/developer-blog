@@ -1,125 +1,39 @@
-import Link from 'next/link';
-import { getPosts } from '@/lib/getPosts';
-import { siteConfig } from '@/lib/config';
-import { Spotlight } from '@/components/ui/Spotlight';
-import { BackgroundBeams } from '@/components/ui/BackgroundBeams';
-import { TextGenerateEffect } from '@/components/ui/TextGenerateEffect';
-import { HoverEffect } from '@/components/ui/HoverEffect';
+import { getPosts } from "@/lib/getPosts";
+import PostCard from "@/components/PostCard";
+import { BackgroundBeams } from "@/components/ui/BackgroundBeams";
 
 export default async function HomePage() {
-  const allPosts = await getPosts();
-  const featuredPosts = allPosts.slice(0, 3);
+  const posts = await getPosts();
 
   return (
-    <div className="relative w-full overflow-hidden flex flex-col items-center justify-center py-12">
-      <Spotlight
-        className="-top-40 left-0 md:left-60 md:-top-20"
-        fill="white"
-      />
-      <BackgroundBeams />
-      
-      <div className="relative z-10 w-full space-y-24">
-        {/* Hero Section */}
-        <section className="space-y-8">
-          <h1 className="text-4xl font-extrabold tracking-tighter sm:text-7xl text-slate-900 dark:text-white leading-[1.1]">
-            Senior Backend Engineer <br />
-            & <span className="text-blue-600 dark:text-blue-400">Architect.</span>
+    <div className="relative min-h-[calc(100vh-84px)]">
+      <div className="relative z-10 space-y-12">
+        <section className="space-y-6 max-w-2xl">
+          <h1 className="text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.1]">
+            Digital <span className="text-blue-600 dark:text-blue-400">Engineering</span> Garden.
           </h1>
-          <div className="max-w-2xl">
-            <TextGenerateEffect 
-                words="I build scalable systems and share my learnings on distributed systems, DevOps, and senior-level software architecture. Welcome to my digital garden."
-                className="text-xl text-slate-600 dark:text-slate-400 leading-relaxed"
-            />
-          </div>
-          <div className="flex flex-wrap gap-4 pt-4">
-            <Link
-              href="/blog"
-              className="inline-flex items-center justify-center rounded-full bg-slate-900 dark:bg-white px-8 py-4 text-sm font-semibold text-white dark:text-slate-900 transition-all hover:scale-[1.05] active:scale-[0.95] shadow-2xl shadow-blue-500/20"
-            >
-              Read the blog
-            </Link>
-            <a
-              href={siteConfig.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 px-8 py-4 text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-900 transition-all hover:scale-[1.05] active:scale-[0.95]"
-            >
-              Follow on GitHub
-            </a>
-          </div>
+          <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+            Exploring the intersection of distributed systems, cloud-native architecture, and high-performance frontend engineering.
+          </p>
         </section>
 
-        {/* Stats Section - Professional Persona */}
-        <section className="grid grid-cols-2 lg:grid-cols-4 gap-8 py-10 border-y border-slate-100 dark:border-slate-800/50">
-          {[
-            { label: "Experience", value: "3+ Years" },
-            { label: "Scale", value: "1M+ RPS" },
-            { label: "Systems", value: "Cloud Native" },
-            { label: "Focus", value: "Architecture" }
-          ].map((stat, i) => (
-            <div key={i} className="flex flex-col items-center md:items-start">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 mb-1">
-                {stat.label}
-              </span>
-              <span className="text-2xl font-black text-slate-900 dark:text-white">
-                {stat.value}
-              </span>
-            </div>
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+          {posts.map((post) => (
+            <PostCard key={post.slug} post={post} />
           ))}
         </section>
 
-        {/* Featured Posts Section */}
-        <section className="space-y-8">
-          <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-4">
-            <h2 className="text-2xl font-bold tracking-tight">Featured Posts</h2>
-            <Link href="/blog" className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">
-              View all posts →
-            </Link>
+        {posts.length === 0 && (
+          <div className="flex flex-col items-center justify-center py-24 text-center">
+            <p className="text-slate-500">No posts found in /content/posts</p>
           </div>
-          
-          <HoverEffect 
-            items={featuredPosts.map(post => ({
-                title: post.title,
-                description: post.description,
-                link: `/blog/${post.slug.toLowerCase()}`,
-                date: new Date(post.date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }),
-                readingTime: post.readingTime,
-                tags: post.tags
-            }))}
-          />
-        </section>
-
-        {/* Newsletter Section - Premium Glassmorphism */}
-        <section className="relative overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 p-8 md:p-12 backdrop-blur-xl shadow-2xl">
-          <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-blue-500/10 blur-3xl opacity-50" />
-          <div className="absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-purple-500/10 blur-3xl opacity-50" />
-          
-          <div className="relative z-10 max-w-xl space-y-6">
-            <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
-              Stay ahead of the curve.
-            </h2>
-            <p className="text-lg text-slate-600 dark:text-slate-400">
-              Join 2,000+ developers getting monthly insights on distributed systems, DevOps patterns, and cloud-native architecture.
-            </p>
-            <form className="flex flex-col sm:flex-row gap-3 pt-2">
-              <input
-                type="email"
-                placeholder="architect@example.com"
-                className="flex-grow rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all shadow-inner"
-                required
-              />
-              <button
-                type="submit"
-                className="rounded-xl bg-slate-900 dark:bg-white px-8 py-3 text-sm font-bold text-white dark:text-slate-900 transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-blue-500/10"
-              >
-                Join the list
-              </button>
-            </form>
-            <p className="text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-widest font-bold">
-              No spam. Just high-signal engineering.
-            </p>
-          </div>
-        </section>
+        )}
+      </div>
+      
+      {/* Background decoration */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-30 dark:opacity-20">
+        <div className="absolute top-[20%] -left-[10%] w-[40%] h-[40%] bg-blue-500/10 blur-[120px] rounded-full" />
+        <div className="absolute bottom-[10%] -right-[10%] w-[35%] h-[35%] bg-purple-500/10 blur-[120px] rounded-full" />
       </div>
     </div>
   );
