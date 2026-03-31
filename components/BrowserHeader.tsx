@@ -217,9 +217,10 @@ export default function BrowserHeader({ posts }: { posts: PostData[] }) {
 
       {/* Bookmarks Bar */}
       <div className="flex flex-wrap items-center h-8 px-2 gap-1 bg-[#f1f3f4] dark:bg-[#35363a] border-b border-[#bdc1c6] dark:border-[#3c4043] text-xs font-medium text-slate-600 dark:text-slate-300">
-        <button onClick={() => setIsTerminalOpen(true)} className="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+        
+        {/*<button onClick={() => setIsTerminalOpen(true)} className="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
           <span className="text-[14px]">⌨️</span> Terminal
-        </button>
+        </button>*/}
         <button onClick={() => setIsContactOpen(true)} className="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-blue-600 dark:text-blue-400 font-bold">
           <span className="text-[14px]">💬</span> Hire Me
         </button>
