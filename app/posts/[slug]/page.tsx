@@ -1,9 +1,14 @@
+
 import { getPostBySlug, getPosts } from "@/lib/getPosts";
 import ReadingProgress from "@/components/ReadingProgress";
 import { ArrowLeft, Calendar, Clock, Tag } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import dynamic from "next/dynamic";
+
+const MDXRemote = dynamic(() => import("next-mdx-remote/rsc").then(mod => mod.MDXRemote), { ssr: false });
+import MDXComponents from "@/components/MDXComponents";
 
 export async function generateStaticParams() {
   const posts = await getPosts();
@@ -12,7 +17,6 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
 
@@ -82,8 +86,13 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         {/* Content Section */}
         <section 
           className="prose prose-slate dark:prose-invert max-w-none prose-lg prose-headings:font-black prose-headings:tracking-tight prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:rounded-3xl"
-          dangerouslySetInnerHTML={{ __html: post.contentHtml || '' }}
-        />
+        >
+          {post.mdxSource ? (
+            <MDXRemote source={post.mdxSource} components={MDXComponents} />
+          ) : (
+            <div dangerouslySetInnerHTML={{ __html: post.contentHtml || '' }} />
+          )}
+        </section>
         
         <footer className="mt-24 pt-8 border-t border-slate-100 dark:border-slate-800">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">

@@ -1,8 +1,13 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+
 import { remark } from 'remark';
 import html from 'remark-html';
+import { serialize } from 'next-mdx-remote/serialize';
+import rehypeHighlight from 'rehype-highlight';
+import rehypeSlug from 'rehype-slug';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 
 const postsDirectory = path.join(process.cwd(), 'content/posts');
 
@@ -72,8 +77,10 @@ export async function getSortedPostsData(): Promise<PostData[]> {
 
 export async function getPostData(slug: string): Promise<PostData> {
   // Try .mdx first, then .md
+  let ext = '.mdx';
   let fullPath = path.join(postsDirectory, `${slug}.mdx`);
   if (!fs.existsSync(fullPath)) {
+    ext = '.md';
     fullPath = path.join(postsDirectory, `${slug}.md`);
   }
 
@@ -84,27 +91,48 @@ export async function getPostData(slug: string): Promise<PostData> {
   const fileContents = fs.readFileSync(fullPath, 'utf8');
   const matterResult = matter(fileContents);
 
-  // Use remark to convert markdown into HTML string
-  const processedContent = await remark()
-    .use(html)
-    .process(matterResult.content);
-  const contentHtml = processedContent.toString();
-
   // Calculate reading time
   const wordCount = matterResult.content.split(/\s+/gu).length;
   const readingTime = `${Math.ceil(wordCount / 200)} min read`;
 
-  return {
-    slug,
-    contentHtml,
-    readingTime,
-    title: matterResult.data.title || 'Untitled',
-    date: matterResult.data.date || new Date().toISOString(),
-    category: matterResult.data.category || 'General',
-    excerpt: matterResult.data.excerpt || '',
-    tags: matterResult.data.tags || [],
-    coverImage: matterResult.data.coverImage || null,
-  } as PostData;
+  if (ext === '.mdx') {
+    // Use next-mdx-remote for MDX
+    const mdxSource = await serialize(matterResult.content, {
+      mdxOptions: {
+        rehypePlugins: [rehypeHighlight, rehypeSlug, rehypeAutolinkHeadings],
+        format: 'mdx',
+      },
+      scope: matterResult.data,
+    });
+    return {
+      slug,
+      mdxSource,
+      readingTime,
+      title: matterResult.data.title || 'Untitled',
+      date: matterResult.data.date || new Date().toISOString(),
+      category: matterResult.data.category || 'General',
+      excerpt: matterResult.data.excerpt || '',
+      tags: matterResult.data.tags || [],
+      coverImage: matterResult.data.coverImage || null,
+    } as PostData & { mdxSource: any };
+  } else {
+    // Use remark-html for .md
+    const processedContent = await remark()
+      .use(html)
+      .process(matterResult.content);
+    const contentHtml = processedContent.toString();
+    return {
+      slug,
+      contentHtml,
+      readingTime,
+      title: matterResult.data.title || 'Untitled',
+      date: matterResult.data.date || new Date().toISOString(),
+      category: matterResult.data.category || 'General',
+      excerpt: matterResult.data.excerpt || '',
+      tags: matterResult.data.tags || [],
+      coverImage: matterResult.data.coverImage || null,
+    } as PostData;
+  }
 }
 
 export function getAllCategories(posts: PostData[]): string[] {

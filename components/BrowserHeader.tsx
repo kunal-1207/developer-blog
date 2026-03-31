@@ -38,11 +38,18 @@ export default function BrowserHeader({ posts }: { posts: PostData[] }) {
   const [isSocialsOpen, setIsSocialsOpen] = useState(false);
 
   // Initial tabs
-  const [tabs, setTabs] = useState<Tab[]>([
-    { id: 'home', label: 'New Tab', href: '/', closable: false },
-    { id: 'architecture', label: 'Architecture', href: '/tab/Architecture', closable: true },
-    { id: 'devops', label: 'DevOps', href: '/tab/DevOps', closable: true },
-  ]);
+  const [tabs, setTabs] = useState<Tab[]>(() => {
+    const categories = Array.from(new Set(posts.map(post => post.category).filter(Boolean)));
+    return [
+      { id: 'home', label: 'New Tab', href: '/', closable: false },
+      ...categories.map(cat => ({
+        id: cat.toLowerCase(),
+        label: cat,
+        href: `/tab/${cat}`,
+        closable: true
+      }))
+    ];
+  });
 
   useEffect(() => setMounted(true), []);
 
