@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>DevBlog</title>
+  <link>https://developer-blog-bay.vercel.app</link>
+  <description>A production-grade developer blog powered by Next.js and MDX.</description>
+  <lastBuildDate>Mon, 23 Mar 2026 06:04:40 GMT</lastBuildDate>
+  <atom:link href="https://developer-blog-bay.vercel.app/rss.xml" rel="self" type="application/rss+xml" />
+  
+    <item>
+      <title>Building Scalable Distributed Systems</title>
+      <link>https://developer-blog-bay.vercel.app/posts/building-scalable-distributed-systems</link>
+      <description>Learn the core principles of building systems that scale to millions of users.</description>
+      <pubDate>Wed, 20 Mar 2024 00:00:00 GMT</pubDate>
+      <guid>https://developer-blog-bay.vercel.app/posts/building-scalable-distributed-systems</guid>
+    </item>
+    <item>
+      <title>Mastering Kubernetes in Production</title>
+      <link>https://developer-blog-bay.vercel.app/posts/mastering-kubernetes</link>
+      <description>Best practices for deploying and managing Kubernetes clusters at scale.</description>
+      <pubDate>Fri, 15 Mar 2024 00:00:00 GMT</pubDate>
+      <guid>https://developer-blog-bay.vercel.app/posts/mastering-kubernetes</guid>
+    </item>
+    <item>
+      <title>The Future of Frontend: Next.js 15</title>
+      <link>https://developer-blog-bay.vercel.app/posts/nextjs-15-future</link>
+      <description>What's new in Next.js 15 and how it's changing the way we build web applications.</description>
+      <pubDate>Sun, 10 Mar 2024 00:00:00 GMT</pubDate>
+      <guid>https://developer-blog-bay.vercel.app/posts/nextjs-15-future</guid>
+    </item>
+</channel>
+</rss>

@@ -1,38 +1,44 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import { ReadingProgress } from "@/components/ui/ReadingProgress";
+import BrowserLayout from "@/components/BrowserLayout";
+import { getPosts } from "@/lib/getPosts";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+});
+
+const outfit = Outfit({
+  variable: "--font-outfit",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
-  title: "DevBlog | Portfolio-Grade Developer Blog",
-  description: "A production-grade developer blog powered by Next.js and MDX.",
+  title: "DevBlog | Browser Edition",
+  description: "A production-grade developer blog with a browser-inspired UI.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const posts = await getPosts();
+
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} min-h-screen flex flex-col antialiased`}>
+      <body className={`${inter.variable} ${outfit.variable} antialiased font-sans`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <ReadingProgress />
-          <Header />
-          <main className="flex-grow container mx-auto px-4 py-8 max-w-4xl">
+          <BrowserLayout posts={posts}>
             {children}
-          </main>
-          <Footer />
+          </BrowserLayout>
         </ThemeProvider>
       </body>
     </html>
