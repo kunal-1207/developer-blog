@@ -19,6 +19,7 @@ export interface PostData {
   excerpt: string;
   coverImage?: string;
   contentHtml?: string;
+  mdxSource?: any;
   readingTime?: string;
   tags: string[];
 }
