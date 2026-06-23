@@ -64,18 +64,30 @@ const components = {
         );
     },
     pre: async ({ children }: any) => {
-        const code = children?.props?.children || '';
-        const lang = children?.props?.className?.replace('language-', '') || 'text';
+        const rawCode = children?.props?.children || '';
+        const code = typeof rawCode === 'string' ? rawCode : String(rawCode);
+        const rawLang = children?.props?.className?.replace('language-', '') || 'plaintext';
+        // Map common aliases that shiki may not recognise to safe fallbacks
+        const lang = rawLang === 'text' || rawLang === '' ? 'plaintext' : rawLang;
 
-        const html = await codeToHtml(code, {
-            lang,
-            theme: 'github-dark',
-        });
+        let highlightedHtml = '';
+        try {
+            highlightedHtml = await codeToHtml(code, {
+                lang,
+                theme: 'github-dark',
+            });
+        } catch {
+            // Fallback: escape HTML and wrap in a plain code block
+            const escaped = typeof code === 'string' 
+                ? code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                : String(code);
+            highlightedHtml = `<pre style="background:#0d1117;padding:1rem;overflow-x:auto"><code>${escaped}</code></pre>`;
+        }
 
         return (
             <div className="relative group my-10 rounded-2xl border border-slate-200 dark:border-slate-800 bg-[#0d1117] shadow-xl overflow-hidden">
                 <div className="absolute -inset-2 bg-gradient-to-r from-accent/20 to-purple-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                
+
                 <div className="flex items-center justify-between px-4 py-2 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
                     <div className="text-xs font-mono text-slate-500 uppercase tracking-widest select-none">
                         {lang}
@@ -86,7 +98,7 @@ const components = {
 
                 <div
                     className="relative text-sm p-4 overflow-x-auto"
-                    dangerouslySetInnerHTML={{ __html: html }}
+                    dangerouslySetInnerHTML={{ __html: highlightedHtml }}
                 />
             </div>
         );

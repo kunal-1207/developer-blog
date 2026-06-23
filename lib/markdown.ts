@@ -4,10 +4,6 @@ import matter from 'gray-matter';
 
 import { remark } from 'remark';
 import html from 'remark-html';
-import { serialize } from 'next-mdx-remote/serialize';
-import rehypeHighlight from 'rehype-highlight';
-import rehypeSlug from 'rehype-slug';
-import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 
 const postsDirectory = path.join(process.cwd(), 'content/posts');
 
@@ -19,7 +15,7 @@ export interface PostData {
   excerpt: string;
   coverImage?: string;
   contentHtml?: string;
-  mdxSource?: any;
+  mdxContent?: string;
   readingTime?: string;
   tags: string[];
 }
@@ -97,17 +93,10 @@ export async function getPostData(slug: string): Promise<PostData> {
   const readingTime = `${Math.ceil(wordCount / 200)} min read`;
 
   if (ext === '.mdx') {
-    // Use next-mdx-remote for MDX
-    const mdxSource = await serialize(matterResult.content, {
-      mdxOptions: {
-        rehypePlugins: [rehypeHighlight, rehypeSlug, rehypeAutolinkHeadings],
-        format: 'mdx',
-      },
-      scope: matterResult.data,
-    });
+    // Pass raw MDX content — next-mdx-remote/rsc handles compilation on the server
     return {
       slug,
-      mdxSource,
+      mdxContent: matterResult.content,
       readingTime,
       title: matterResult.data.title || 'Untitled',
       date: matterResult.data.date || new Date().toISOString(),
@@ -115,7 +104,7 @@ export async function getPostData(slug: string): Promise<PostData> {
       excerpt: matterResult.data.excerpt || '',
       tags: matterResult.data.tags || [],
       coverImage: matterResult.data.coverImage || null,
-    } as PostData & { mdxSource: any };
+    } as PostData;
   } else {
     // Use remark-html for .md
     const processedContent = await remark()
